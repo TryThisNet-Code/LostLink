@@ -28,6 +28,7 @@
 
         public function register(){
             $data = json_decode(file_get_contents('php://input'), true);
+            $data = array_map('trim', $data);
             $userModel = new User();
 
             $error = [];
@@ -40,8 +41,8 @@
                 $error[] = 'Invalid email address';
             }
 
-            if(empty($data['phonenum']) || isValidPhoneNumber($data['phonenum'])){
-                $error[] = 'Invalid phone nunber';
+            if(empty($data['phonenum']) || !isValidPhoneNumber($data['phonenum'])){
+                $error[] = 'Invalid phone number';
             }
 
             if($data['password'] != $data['twopass']){
