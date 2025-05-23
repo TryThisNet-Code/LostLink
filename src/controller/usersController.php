@@ -5,10 +5,18 @@
 
     class UserController{
         public function showLoginForm(){
+            if(isset(($_SESSION['user']))){
+                header("Location: profile.php");
+                exit;
+            }
             include __DIR__ . '/../views/login.php';
         }
 
         public function showRegisterForm(){
+            if(isset(($_SESSION['user']))){
+                header("Location: profile.php");
+                exit;
+            }
             include __DIR__ . '/../views/register.php';
         }
 
