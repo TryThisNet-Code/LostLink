@@ -32,7 +32,7 @@
             .then(res => res.json())
             .then(data => {
                 if(data.success){
-                    location.reload();
+                    window.location.href = "profile.php";
                 }else{
                     document.getElementById("feedback").innerHTML = Array.isArray(data.message) ? data.message.join('<br>') : data.message;
                     document.getElementById("feedback").style.color = "red";

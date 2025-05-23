@@ -76,7 +76,8 @@
 
         public function profile(){
             if(!isset($_SESSION['user'])){
-                header("Location: /login.php");
+                error_log("User session is not set");
+                header("Location: login.php");
                 exit;
             }
             include __DIR__ . '/../views/profile.php';
@@ -85,7 +86,7 @@
         public function logout(){
             session_unset();
             session_destroy();
-            header("Location: /public/login.php");
+            header("Location: login.php");
         }
     }
 ?>
