@@ -13,7 +13,7 @@
             $hashpass = password_hash($password, PASSWORD_DEFAULT);
             $fullname = $fname . " " . $lname;
             $stmt = $this->conn->prepare('INSERT INTO users_tbl(full_name, email, phone_number, password) VALUES (?,?,?,?)');
-            $stmt->bind_param("ssss", $fullname, $email, $phonenum, $password);
+            $stmt->bind_param("ssss", $fullname, $email, $phonenum, $hashpass);
             return $stmt->execute();
         }
 

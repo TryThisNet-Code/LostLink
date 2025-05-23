@@ -5,7 +5,7 @@
 
     class UserController{
         public function showLoginForm(){
-            include __DIR__ . '/../views/index.php';
+            include __DIR__ . '/../views/login.php';
         }
 
         public function showRegisterForm(){
@@ -85,7 +85,7 @@
         public function logout(){
             session_unset();
             session_destroy();
-            header("Location: /login.php");
+            header("Location: /public/login.php");
         }
     }
 ?>
