@@ -41,7 +41,7 @@
             const email = document.querySelector('input[name="email"]').value;
             const phonenum = document.querySelector('input[name="phonenum"]').value;
             const feedback = document.getElementById("feedback");
-            
+
             if(!item||!categ||!color||!place||!date||!name||!email||!phonenum){
                 alert("Please fill all of the fields");
                 return;
@@ -52,7 +52,7 @@
                 headers: {"Content-Type":"application/json"},
                 body: JSON.stringify({item, categ, color, place, add_info, date, name, email, phonenum})
             })
-            .then(res => res.json)
+            .then(res => res.json())
             .then(data => {
                 feedback.innerText = data.message;
                 feedback.style.color = data.success ? "green" : "red";
@@ -61,6 +61,15 @@
                     setTimeout(() => {
                         location.reload();
                     }, 1500);
+                }else{
+                    document.getElementById("feedback").innerHTML = Array.isArray(data.message) ? data.message.join('<br>') : data.message;
+                    document.getElementById("feedback").style.color = "red";
+
+                    if(data.success == false){
+                        setTimeout(() => {
+                        location.reload();
+                        }, 1500);
+                    }
                 }
             })
         }

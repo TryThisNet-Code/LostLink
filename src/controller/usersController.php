@@ -7,7 +7,7 @@
     class UserController{
         //accout login logic
         public function showLoginForm(){//showing the loginform
-            if(isset(($_SESSION['user']))){
+            if(isset($_SESSION['user'])){
                 header("Location: profile.php");
                 exit;
             }
@@ -15,7 +15,7 @@
         }
         //showing the register form
         public function showRegisterForm(){
-            if(isset(($_SESSION['user']))){
+            if(isset($_SESSION['user'])){
                 header("Location: profile.php");
                 exit;
             }
@@ -113,33 +113,33 @@
             $data = array_map('trim', $data);
             $makePost = new Posts();
 
-            $error = [];
+            $errorPost = [];
 
             if(empty($data['item']) || empty($data['categ']) || empty($data['color']) || empty($data['place']) || empty($data['name']) || empty($data['date'])){
-                $error[] = 'Fill all the fields';
+                $errorPost[] = 'Fill all the fields';
             }
 
             if(strlen($data['item']) < 2 || strlen($data['color']) < 2){
-                $error[] = 'Input must be atleast above 1 character';
+                $errorPost[] = 'Input must be atleast above 1 character';
             }
 
             if(strlen($data['categ']) < 4 || strlen($data['place']) < 4){
-                $error[] = 'Input must be atleast above 3 character';
+                $errorPost[] = 'Input must be atleast above 3 character';
             }
 
             if(empty($data['email']) || !filter_var($data['email'], FILTER_VALIDATE_EMAIL)){
-                $error[] = 'Invalid email address';
+                $errorPost[] = 'Invalid email address';
             }
 
             if(empty($data['phonenum']) || !isValidPhoneNumber($data['phonenum'])){
-                $error[] = 'Invalid phone number';
+                $errorPost[] = 'Invalid phone number';
             }
 
-            if(!empty($error)){
+            if(!empty($errorPost)){
                 http_response_code(422);
                 echo json_encode([
                     'success' => false,
-                    'message' => $error 
+                    'message' => $errorPost 
                 ]);
                 return;
             }
@@ -147,7 +147,7 @@
             $makePost->createPost($_SESSION['user']['user_id'], $data['item'], $data['categ'], $data['color'], $data['place'], $data['add_info'], $data['name'], $data['email'], $data['phonenum'], $data['date']);
             echo json_encode([
                 'success' => true,
-                'message' => 'Post succesfully'
+                'message' => 'Post Added Successfully'
             ]);
         }
     }
