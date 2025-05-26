@@ -106,7 +106,6 @@
             if(!isset($_SESSION['user'])){
                 http_response_code(403);
                 echo json_encode(['success' => false, 'message' => 'Unathorized Access']);
-                header("Location: login.php");
                 return;
             }
 
@@ -146,7 +145,10 @@
             }
 
             $makePost->createPost($_SESSION['user']['user_id'], $data['item'], $data['categ'], $data['color'], $data['place'], $data['add_info'], $data['name'], $data['email'], $data['phonenum'], $data['date']);
-            echo json_encode(['success' => true]);
+            echo json_encode([
+                'success' => true,
+                'message' => 'Post succesfully'
+            ]);
         }
     }
 ?>

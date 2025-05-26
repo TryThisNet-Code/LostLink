@@ -2,5 +2,10 @@
     require_once __DIR__ . '/../src/controller/usersController.php';
 
     $user = new UserController();
-    $user->profile();
+    
+    if($_SERVER['REQUEST_METHOD'] === 'POST'){
+        $user->makePosts();
+    }else{
+        $user->profile();
+    }
 ?>
