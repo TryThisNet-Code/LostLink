@@ -1,9 +1,11 @@
 <?php
     session_start();
     require_once __DIR__ . '/../models/users.php';
+    require_once __DIR__ . '/../models/post.php';
     require_once __DIR__ . '/../helpers/phoneValidation.php';
 
     class UserController{
+        //accout login logic
         public function showLoginForm(){//showing the loginform
             if(isset(($_SESSION['user']))){
                 header("Location: profile.php");
@@ -84,10 +86,9 @@
                 'message' => 'Registration Successful'
             ]);
         }
-
+        //check sessions if its not declared you can't go to profile
         public function profile(){
             if(!isset($_SESSION['user'])){
-                error_log("User session is not set");
                 header("Location: login.php");
                 exit;
             }
@@ -98,6 +99,54 @@
             session_unset();
             session_destroy();
             header("Location: login.php");
+        }
+
+        //posting logic
+        public function makePosts(){
+            if(!isset($_SESSION['user'])){
+                http_response_code(403);
+                echo json_encode(['success' => false, 'message' => 'Unathorized Access']);
+                header("Location: login.php");
+                return;
+            }
+
+            $data = json_decode(file_get_contents('php://input'), true);
+            $data = array_map('trim', $data);
+            $makePost = new Posts();
+
+            $error = [];
+
+            if(empty($data['item']) || empty($data['categ']) || empty($data['color']) || empty($data['place']) || empty($data['name']) || empty($data['date'])){
+                $error[] = 'Fill all the fields';
+            }
+
+            if(strlen($data['item']) < 2 || strlen($data['color']) < 2){
+                $error[] = 'Input must be atleast above 1 character';
+            }
+
+            if(strlen($data['categ']) < 4 || strlen($data['place']) < 4){
+                $error[] = 'Input must be atleast above 3 character';
+            }
+
+            if(empty($data['email']) || !filter_var($data['email'], FILTER_VALIDATE_EMAIL)){
+                $error[] = 'Invalid email address';
+            }
+
+            if(empty($data['phonenum']) || !isValidPhoneNumber($data['phonenum'])){
+                $error[] = 'Invalid phone number';
+            }
+
+            if(!empty($error)){
+                http_response_code(422);
+                echo json_encode([
+                    'success' => false,
+                    'message' => $error 
+                ]);
+                return;
+            }
+
+            $makePost->createPost($_SESSION['user']['user_id'], $data['item'], $data['categ'], $data['color'], $data['place'], $data['add_info'], $data['name'], $data['email'], $data['phonenum'], $data['date']);
+            echo json_encode(['success' => true]);
         }
     }
 ?>

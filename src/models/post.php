@@ -9,9 +9,10 @@
             $this->conn = $db->connect();
         }
 
-        public function createPost($userID, $userPost){
-            $stmt = $this->conn->prepare('INSERT INTO post_tbl (user_id, content) VALUES(?,?)');
-            $stmt->bind_param('is', $userID, $userPost);
+        public function createPost($userID, $item, $categ, $color, $place, $add_info, $name, $email, $phonenum, $date){
+            $stmt = $this->conn->prepare('INSERT INTO post_tbl (user_id, item, categ, color, place, add_info, finder_name, finder_email, finder_phonenum, date_found) 
+                                          VALUES(?,?,?,?,?,?,?,?,?,?)');
+            $stmt->bind_param('isssssssss', $userID, $item, $categ, $color, $place, $add_info, $name, $email, $phonenum, $date);
             $stmt->execute();
         }
 
