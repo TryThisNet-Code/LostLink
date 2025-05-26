@@ -4,14 +4,14 @@
     require_once __DIR__ . '/../helpers/phoneValidation.php';
 
     class UserController{
-        public function showLoginForm(){
+        public function showLoginForm(){//showing the loginform
             if(isset(($_SESSION['user']))){
                 header("Location: profile.php");
                 exit;
             }
             include __DIR__ . '/../views/login.php';
         }
-
+        //showing the register form
         public function showRegisterForm(){
             if(isset(($_SESSION['user']))){
                 header("Location: profile.php");
@@ -19,28 +19,31 @@
             }
             include __DIR__ . '/../views/register.php';
         }
-
+        //login
         public function login(){
             $data = json_decode(file_get_contents('php://input'), true);
             $userModel = new User();
             $user = $userModel->findUser($data['email']);
 
             if($user && password_verify($data['password'], $user['password'])){
-                $_SESSION['user'] = $user['full_name'];
+                $_SESSION['user'] = [
+                    'full_name' => $user['full_name'],
+                    'user_id' => $user['user_id']
+                ];
                 echo json_encode(['success' => true, 'message' => 'Login Successfully']);
             }else{
                 http_response_code(401);
                 echo json_encode(['success' => false, 'message' => 'Login Failed']);
             }
         }
-
+        //register
         public function register(){
             $data = json_decode(file_get_contents('php://input'), true);
             $data = array_map('trim', $data);
             $userModel = new User();
 
             $error = [];
-
+            //validations of the inputs
             if(empty($data['fname']) || empty($data['lname']) || empty($data['password']) || empty($data['twopass'])){
                 $error[] = 'Fill all the fields';
             }

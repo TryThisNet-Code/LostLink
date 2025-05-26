@@ -6,7 +6,7 @@
     <title>Profile</title>
 </head>
 <body>
-    <h2>Welcome <?= htmlspecialchars($_SESSION['user'])?>!</h2>
+    <h2>Welcome <?= htmlspecialchars($_SESSION['user']['full_name'])?>!</h2>
     <p>You are logged in</p>
     
     <a href="logout.php">Logout</a>
