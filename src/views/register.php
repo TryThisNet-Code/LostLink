@@ -1,3 +1,6 @@
+<?php
+    include('nav.php');
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,6 +17,7 @@
     <input type="password" name="password" placeholder="Enter password">
     <input type="password" name="twopass" placeholder="Re-enter password">
     <button onclick="register()">Register</button>
+    <p>Already had an account?Log in <a href="login.php">here</a></p>
     <div id="feedback">
 
     </div>
